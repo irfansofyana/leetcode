@@ -1,23 +1,31 @@
 func twoSum(numbers []int, target int) []int {
-    left := 0; right := 1; n := len(numbers)
-    
     ans := make([]int, 2)
-    for left < n {
-        for right >= 0 && numbers[left] + numbers[right] > target {
-            right--
+    n := len(numbers)
+
+    isFound := false
+    for i, number := range numbers {
+        pair := target - number
+        left := i + 1
+        right := n - 1
+        for left <= right {
+            mid := (left + right) / 2
+            if numbers[mid] == pair {
+                ans[0] = i+1
+                ans[1] = mid+1
+                isFound = true
+                break
+            }
+            if (numbers[mid] < pair) {
+                left = mid + 1
+            }
+            if (numbers[mid] > pair) {
+                right = mid - 1
+            }
         }
-        for right < n && numbers[right] + numbers[left] < target {
-            right++
-        }
-        if right < n && numbers[left] + numbers[right] == target {
-            ans[0] = left + 1; ans[1] = right + 1
+        if isFound {
             break
         }
-        left++
-        if right == n {
-            right--
-        }
     }
-    
+
     return ans
 }
